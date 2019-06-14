@@ -1,0 +1,1 @@
+# akeneo-purge-media-files
