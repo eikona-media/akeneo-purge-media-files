@@ -8,7 +8,7 @@ This bundle comes with a new command to remove unused media files.
 
 | Version | Akeneo PIM Community Edition | Akeneo PIM Enterprise Edition |
 |:-------:|:----------------------------:|:-----------------------------:|
-| 1.0.*   | 2.3.*                        | __Do not use__                |
+| 1.*     | 2.3.*                        | __Do not use__                |
 
 
 ## Installation
@@ -17,7 +17,7 @@ This bundle comes with a new command to remove unused media files.
     composer require eikona-media/akeneo-purge-media-files:~1.0
 ```
 
-3) Enable the bundle in the `app/AppKernel.php` file in the `registerProjectBundles()` method:
+Enable the bundle in the `app/AppKernel.php` file in the `registerProjectBundles()` method:
 ```php
 protected function registerProjectBundles()
 {
