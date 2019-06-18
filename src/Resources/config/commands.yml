@@ -1,5 +1,5 @@
 services:
-  eikona.media.purge_bundle.command.purge_job_execution_files:
+  eikona.media.purge_media_files.command.purge_media_files:
     class: EikonaMedia\Akeneo\PurgeMediaFilesBundle\Command\PurgeMediaFilesCommand
     arguments:
       - '@doctrine.orm.entity_manager'
