@@ -8,19 +8,20 @@
 
 namespace EikonaMedia\Akeneo\PurgeMediaFilesBundle\Command;
 
-use Akeneo\Component\FileStorage\FilesystemProvider;
-use Akeneo\Component\FileStorage\Model\FileInfoInterface;
-use Akeneo\Component\FileStorage\Repository\FileInfoRepositoryInterface;
-use Doctrine\ORM\EntityManagerInterface;
+use Akeneo\Pim\Enrichment\Component\FileStorage;
+use Akeneo\Pim\Enrichment\Component\Product\Model\Product;
+use Akeneo\Pim\Enrichment\Component\Product\Model\ProductModel;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductModelRepositoryInterface;
+use Akeneo\Pim\Enrichment\Component\Product\Repository\ProductRepositoryInterface;
+use Akeneo\Tool\Component\FileStorage\FilesystemProvider;
+use Akeneo\Tool\Component\FileStorage\Model\FileInfoInterface;
+use Akeneo\Tool\Component\FileStorage\Repository\FileInfoRepositoryInterface;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\FileNotFoundException;
 use League\Flysystem\Filesystem;
 use League\Flysystem\FilesystemInterface;
-use Pim\Component\Catalog\FileStorage;
-use Pim\Component\Catalog\Model\Product;
-use Pim\Component\Catalog\Model\ProductModel;
-use Pim\Component\Catalog\Repository\ProductModelRepositoryInterface;
-use Pim\Component\Catalog\Repository\ProductRepositoryInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -29,7 +30,7 @@ use Symfony\Component\Console\Style\SymfonyStyle;
 
 class PurgeMediaFilesCommand extends Command
 {
-    /** @var EntityManagerInterface */
+    /** @var EntityManager */
     protected $entityManager;
 
     /** @var FileInfoRepositoryInterface */
@@ -51,7 +52,7 @@ class PurgeMediaFilesCommand extends Command
     protected $productModelRepository;
 
     /**
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManager $entityManager
      * @param FileInfoRepositoryInterface $fileInfoRepository
      * @param string $catalogStorageDir
      * @param FilesystemProvider $filesystemProvider
@@ -59,7 +60,7 @@ class PurgeMediaFilesCommand extends Command
      * @param ProductModelRepositoryInterface $productModelRepository
      */
     public function __construct(
-        EntityManagerInterface $entityManager,
+        EntityManager $entityManager,
         FileInfoRepositoryInterface $fileInfoRepository,
         string $catalogStorageDir,
         FilesystemProvider $filesystemProvider,
@@ -89,6 +90,7 @@ class PurgeMediaFilesCommand extends Command
      * @param OutputInterface $output
      * @return int|void|null
      * @throws FileNotFoundException
+     * @throws OptimisticLockException
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
